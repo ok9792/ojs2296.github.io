@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" type="text/css" href="https://image.yes24.com/sysimage/yesUI/mobile/event/m_event.css?ver=20221215a" /> 
+<script type="text/javascript" src="https://secimage.yes24.com/sysimage/Contents/Scripts/p/jquery/jquery-1.12.4.min.js"></script>
+<style>
+@font-face { 
+    font-family: 'NeoDunggeunmoPro'; 
+    font-style: normal; 
+	font-weight: 400; 
+    src: url("https://image.yes24.com/sysimage/font/NeoD/NeoDunggeunmoPro-Regular.woff2") format('woff2'),
+		 url("https://image.yes24.com/sysimage/font/NeoD/NeoDunggeunmoPro-Regular.woff") format('woff'), 
+		 url("https://image.yes24.com/sysimage/font/NeoD/NeoDunggeunmoPro-Regular.ttf") format('truetype'),
+         url("https://image.yes24.com/sysimage/font/NeoD/NeoDunggeunmoPro-Regular.eot?#iefix") format('embedded-opentype'); 
+}
+
+#gameWrap { position:relative;margin:0 auto;text-align:center; }
+#gameWrap * { font-family:'NeoDunggeunmoPro','ptd','맑은 고딕','Malgun Gothic','Apple SD Gothic Neo',AppleGothic,'돋움',Dotum,'굴림',Gulim,Helvetica,sans-serif; } 
+#gameWrap .gameArea { position:absolute;left:50%;top:0;bottom:0;margin-left:calc(-280 / 1000 * 100vh);width:calc(560 / 1000 * 100vh);height:100vh; }
+#gameWrap .gameArea .gameBg img { height:100vh; }
+#gameWrap .gameArea .topTxt { position:absolute;left:50%;top:calc(58 / 1000 * 100vh);margin-left:calc(-133 / 1000 * 100vh);;width:calc(266 / 1000 * 100vh);height:calc(78 / 1000 * 100vh);background-color:#f7f316; }
+#gameWrap .gameArea .topTxt p { margin:0;line-height:calc(78 / 1000 * 100vh);font-size:calc(35 / 1000 * 100vh);color:#633397;font-weight:900;animation:flash 1s infinite alternate; }
+#gameWrap .gameArea .moniterTxt { position:absolute;left:0;right:0;top:calc(220 / 1000 * 100vh); }
+#gameWrap .gameArea .moniterTxt p a { display:block;line-height:calc(52 / 1000 * 100vh);;letter-spacing:calc(2 / 1000 * 100vh);font-size:calc(52 / 1000 * 100vh);color:#fff;font-weight:bold;text-decoration:none; }
+#gameWrap .gameArea .moniterTxt p a .txt_small { line-height:calc(32 / 1000 * 100vh);letter-spacing:calc(2 / 1000 * 100vh);font-size:calc(30 / 1000 * 100vh);font-weight:normal; }
+#gameWrap .gameArea .gameBotBg { position:absolute;left:0;right:0;bottom:0; }
+#gameWrap .gameArea .gameBotBg img { height:calc(190 / 1000 * 100vh); }
+#gameWrap .gameArea .botTxt { position:absolute;left:50%;top:calc(710 / 1000 * 100vh);margin-left:calc(-60 / 1000 * 100vh); }
+#gameWrap .gameArea .botTxt p { line-height:calc(32 / 1000 * 100vh);font-size:calc(28 / 1000 * 100vh);color:#f7f316;background-color:#633397;animation:jump 0.5s infinite alternate; }
+#gameWrap .gameArea.mask .moniterTxt { position:absolute;left:0;right:0;top:calc(225 / 1000 * 100vh);animation:jump 0.5s infinite alternate; }
+#gameWrap .gameArea.insert .moniterTxt p { margin-top:calc(60 / 1000 * 100vh);line-height:calc(52 / 1000 * 100vh);letter-spacing:calc(2 / 1000 * 100vh);font-size:calc(40 / 1000 * 100vh);color:#fff;font-weight:bold; }
+#gameWrap .gameArea.start .gameTop img { height:calc(810 / 1000 * 100vh); }
+#gameWrap .gameArea.start .moniterTxt p { margin:calc(20 / 1000 * 100vh);line-height:calc(52 / 1000 * 100vh);letter-spacing:calc(2 / 1000 * 100vh);font-size:calc(52 / 1000 * 100vh);color:#fff;font-weight:bold; }
+#gameWrap .gameArea.start .moniterTxt p .txt_small { line-height:calc(32 / 1000 * 100vh);letter-spacing:calc(2 / 1000 * 100vh);font-size:calc(30 / 1000 * 100vh);font-weight:normal; }
+
+@keyframes jump {
+    0% {
+        transform: translate(0,0);
+    }
+    100% {
+        transform: translate(0,-5px);
+    }
+}
+</style>
+<body>
+    <div id="gameWrap">
+        <!-- 게임 결과 화면 -->
+        <div class="result gameArea">
+            <div class="topTxt"><p>one more time?</p></div>
+            <div class="gameBg"><img src="result01.gif" alt="결과"></div>
+            <div class="botTxt"><p>Click to insert the coin</p></div>
+            <div class="gameBotBg"><a href="javascript:void(0);" onClick="reStart();"><img src="inp_coin01.gif" alt="남은동전"></a></div>
+        </div>
+
+        <!-- 게임 중 화면 -->
+        <div class="spin gameArea">
+            <div class="topTxt"><p>Click to stop!!</p></div>
+            <div class="gameBg"><a href="javascript:void(0);" onClick="stop();"><img src="spin.gif" alt="섞는중"></a></div>
+        </div>
+
+        <!-- 동전 넣은 후 화면 -->
+        <div class="start gameArea">
+            <div class="topTxt"><p><sapn class="num">1</sapn>/5</p></div>
+            <div class="gameTop"><img src="insert_top03.gif" alt="동전넣는중"></div>
+            <div class="moniterTxt"><p><span class="txt_small">Thank you</span><br/><sapn class="num">3</sapn></p></div>
+            <div class="gameBotBg"><img src="inp_coin01.gif" alt="남은동전"></div>
+        </div>
+
+        <!-- 동전 넣기 전 화면 -->
+        <div class="insert gameArea">
+            <div class="topTxt"><p>It's LUCKY DRAW</p></div>
+            <div class="gameBg"><img src="insert02.gif" alt="빈화면"></div>
+            <div class="moniterTxt"><p>insert coin</p></div>
+            <div class="botTxt"><p>Click to insert the coin</p></div>
+            <div class="gameBotBg"><a href="javascript:void(0);" onClick="insertCoin();"><img src="coin.gif" alt="동전 모션"></a></div>
+        </div>
+
+        <!-- 첫 화면 -->
+        <div class="mask gameArea">
+            <div class="topTxt"><p>HELLO WANNABLE</p></div>
+            <div class="gameBg"><img src="game01.gif" alt="게임시작"></div>
+            <div class="moniterTxt"><p><a href="javascript:void(0);" onClick="maskOut();"><span class="txt_small">CLICK HERE</span><br/>START</a></p></div>
+        </div>
+    </div>
+    <script>
+        var gameNum = 1;
+
+        function maskOut(){ 
+            $(".mask").hide(); 
+        }
+
+        function insertCoin(){ 
+            $(".insert").hide();
+            countNumbers();
+            setTimeout(insertAfter, 3000);
+        }
+
+        function insertAfter() {
+            $(".start").hide();
+            $(".spin").show();
+        }
+
+        function stop() {
+            $(".spin").hide();
+            $(".result").show();
+        }         
+
+        function reStart() {
+            txtNumUp();
+            $(".result").hide();
+            $(".start").show();
+            
+            countNumbers();
+            setTimeout(insertAfter, 3000);
+        }      
+
+        function countNumbers() {
+            var countNum = $('.start .moniterTxt .num');
+            let count = 3;
+
+            function updateCount() {
+                countNum.text(count);
+                count--;
+
+                if (count >= 0) {
+                setTimeout(updateCount, 1000); 
+                }
+            }
+            updateCount();
+        }
+        
+        function txtNumUp() {
+            var topTxt = $('.start .topTxt .num');
+            var gameBgImg = $('.result .gameBg img');
+            var botBgImg1 = $('.start .gameBotBg img');
+            var botBgImg2 = $('.result .gameBotBg img');
+
+            if(gameNum < 4){
+                ++ gameNum;
+                topTxt.html(gameNum);
+                gameBgImg.attr("src","result0"+gameNum+".gif");
+                botBgImg1.attr("src","inp_coin0"+gameNum+".gif");
+                botBgImg2.attr("src","inp_coin0"+gameNum+".gif");
+            }
+            else{
+                ++ gameNum;
+                topTxt.html(gameNum);
+                gameBgImg.attr("src","result05.gif");
+                botBgImg1.attr("src","inp_coin05.gif");
+                botBgImg2.attr("src","inp_coin05.gif");
+
+                $('.result .topTxt p').text('last one. bye!');    
+                $('.result .botTxt p').text('no coin ㅠㅠ');  
+            }
+        } 
+    </script>
+</body>
+</html>
